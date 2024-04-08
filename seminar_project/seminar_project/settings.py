@@ -11,6 +11,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # my app
     'util',
+		'lionapp',
     # Basic App
     'django.contrib.admin',
     'django.contrib.auth',
