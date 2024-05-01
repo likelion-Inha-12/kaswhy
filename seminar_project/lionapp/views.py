@@ -1,7 +1,7 @@
 import json
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from .models import *
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, get_list_or_404
 
 def create_post(request):
     if request.method == 'POST':
@@ -38,3 +38,46 @@ def delete_post(request, pk):
         }
         return JsonResponse(data, status=200)
     return JsonResponse({'message':'DELETE 요청만 허용됩니다.'})
+
+def get_comment(request, post_id):
+    if request.method == 'GET':
+        post = get_object_or_404(Post, pk=post_id)
+        comment_list = post.comments.all()
+        return HttpResponse(comment_list, status=200)
+
+def like(request):
+    if request.method == 'POST':
+        if UserPost.objects.filter(user_id=user_id, post_id=post_id).exists():
+            return HttpResponse("이미 좋아요를 눌렀습니다.", status=409)
+        
+        data = json.loads(request.body)
+
+        user_id = data.get('user_id')
+        post_id = data.get('post_id')
+
+        like = UserPost(
+            user_id = user_id,
+            post_id = post_id
+        )
+        like.save()
+
+    return HttpResponse(status=204)
+    
+def get_like(request, post_id):
+    if request.method == 'GET':
+        post = get_list_or_404(UserPost, pk=post_id)
+        return HttpResponse(len(post), status=200)
+    return HttpResponse(status=204)
+
+# def allUser(request):
+#     if request.method == 'GET':
+#         post = UserPost.objects.all()
+
+#         post_comment_counts = []
+
+#         for tmp in post:
+
+
+#         return JsonResponse(data, status = 200)
+#     return JsonResponse({'message':'GET 요청만 허용됩니다.'})
+
