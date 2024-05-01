@@ -44,23 +44,24 @@ def get_comment(request, post_id):
         post = get_object_or_404(Post, pk=post_id)
         comment_list = post.comments.all()
         return HttpResponse(comment_list, status=200)
-    
+
 def like(request):
     if request.method == 'POST':
+        if UserPost.objects.filter(user_id=user_id, post_id=post_id).exists():
+            return HttpResponse("이미 좋아요를 눌렀습니다.", status=409)
+        
         data = json.loads(request.body)
 
         user_id = data.get('user_id')
         post_id = data.get('post_id')
 
-        post = Post(
+        like = UserPost(
             user_id = user_id,
             post_id = post_id
         )
-        post.save()
+        like.save()
 
-        return JsonResponse({'message':'success'})
-    else:
-        return HttpResponse(status=204)
+    return HttpResponse(status=204)
     
 def get_like(request, post_id):
     if request.method == 'GET':
@@ -68,20 +69,15 @@ def get_like(request, post_id):
         return HttpResponse(len(post), status=200)
     return HttpResponse(status=204)
 
-def allUser(request):
-    if request.method == 'GET':
-        post = UserPost.objects.all()
+# def allUser(request):
+#     if request.method == 'GET':
+#         post = UserPost.objects.all()
 
-        for i in range(0, len(post)):
-            member_count += 1
-            total_hearts += post[i].hearts
-        
-        data = {
-            'message' : '전체 회원 정보입니다.',
-            'member_count' : member_count,
-            'total_hearts' : total_hearts
-        }
+#         post_comment_counts = []
 
-        return JsonResponse(data, status = 200)
-    else:
-        return JsonResponse({'message':'GET 요청만 허용됩니다.'})
+#         for tmp in post:
+
+
+#         return JsonResponse(data, status = 200)
+#     return JsonResponse({'message':'GET 요청만 허용됩니다.'})
+
