@@ -6,7 +6,7 @@ class Member(models.Model):
 
 
 class Post(models.Model):
-    member_id = models.ForeignKey(Member, verbose_name = "member", on_delete= models.CASCADE) # 글 작성자를 표시하기 위해 Member의 id를 fk로 가집니다.
+    # member_id = models.ForeignKey(Member, verbose_name = "member", on_delete= models.CASCADE) # 글 작성자를 표시하기 위해 Member의 id를 fk로 가집니다.
     title = models.CharField(max_length=50) # 50글자가 최대인 문자열
     content = models.TextField(null=True, blank=True) # 글자 수 제한이 없는 긴 문자열, null, blank 허용
     create_at = models.DateTimeField(auto_now_add=True) # 처음 Post 생성시, 현재시간 저장
@@ -22,6 +22,8 @@ class Comment(models.Model):
     def __str__(self):
         return self.content
     
+'''    
 class UserPost(models.Model):
     user_id = models.ForeignKey(Member, verbose_name = "member", on_delete= models.CASCADE) # member id를 fk로 가짐
     post_id = models.ForeignKey(Post,verbose_name = "post", on_delete= models.CASCADE) # post id를 fk로 가짐
+'''
