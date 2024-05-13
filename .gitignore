@@ -1,5 +1,5 @@
 db.sqlite3
 seminaenv
 migrations
-.DS_Stroe
-__pycache__
+.DS_Store
+__pycache__/
