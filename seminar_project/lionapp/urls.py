@@ -13,5 +13,8 @@ urlpatterns = [
 #    path('like/', views.like),
 #    path('getlike/<int:post_id>', views.get_like),
     path('v2/post/<int:pk>',views.PostApiView.as_view()),
-    path('v2/post',views.create_post_v2)
+    path('v2/post',views.create_post_v2),
+    path('', views.index, name='index'),
+    path('', views.IndexView.as_view(), name='index')
+
 ]
